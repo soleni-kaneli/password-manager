@@ -1,0 +1,7 @@
+build/
+build-*/
+.git/
+.github/
+*.md
+k8s/
+tests/
