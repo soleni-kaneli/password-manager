@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-generator
+  labels:
+    app: password-generator
+spec:
+  # Колко копия (pods) искаме да работят едновременно
+  replicas: 2
+  # Как Kubernetes намира кои pods принадлежат на този Deployment
+  selector:
+    matchLabels:
+      app: password-generator
+  template:
+    metadata:
+      labels:
+        app: password-generator
+    spec:
+      containers:
+        - name: password-generator
+          image: ghcr.io/soleni-kaneli/password-manager:latest
+          ports:
+            - containerPort: 8080
+          # Ограничения за ресурси - предпазва останалите приложения в клъстера
+          # ако нашето вземе да "полудее" и започне да яде цяла машина
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "32Mi"
+            limits:
+              cpu: "200m"
+              memory: "64Mi"
+          # Liveness probe: ако това пропадне многократно, Kubernetes рестартира пода
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          # Readiness probe: ако това пропадне, Service спира да праща трафик
+          # към този под, но НЕ го рестартира (полезно при временно претоварване)
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 5
