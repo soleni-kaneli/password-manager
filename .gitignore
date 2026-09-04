@@ -1,0 +1,31 @@
+# Build директории
+build/
+build-*/
+out/
+cmake-build-*/
+
+# Компилирани файлове
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+
+# CMake генерирани файлове
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# IDE / редактори
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS файлове
+.DS_Store
+Thumbs.db
