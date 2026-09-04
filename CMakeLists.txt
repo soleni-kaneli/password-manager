@@ -4,6 +4,8 @@ project(password_generator CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(Threads REQUIRED)
+
 include_directories(include)
 
 # Библиотека с логиката (за да я ползваме и в main, и в тестовете)
@@ -12,7 +14,7 @@ target_include_directories(generator_lib PUBLIC include)
 
 # Изпълнимият файл на приложението
 add_executable(password_generator src/main.cpp)
-target_link_libraries(password_generator PRIVATE generator_lib)
+target_link_libraries(password_generator PRIVATE generator_lib Threads::Threads)
 
 # Тестове - включват се само ако е зададено BUILD_TESTS
 option(BUILD_TESTS "Build unit tests" OFF)

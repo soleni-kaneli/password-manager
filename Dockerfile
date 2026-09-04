@@ -29,6 +29,8 @@ COPY --from=builder /app/build/password_generator /app/password_generator
 
 USER appuser
 
+EXPOSE 8080
+
 ENTRYPOINT ["/app/password_generator"]
-# По подразбиране: парола с дължина 12 (може да се override-не при docker run)
-CMD ["-l", "12"]
+# По подразбиране: стартира HTTP услугата на порт 8080
+CMD ["serve", "--port", "8080"]
