@@ -29,6 +29,15 @@ std::string PasswordGenerator::buildCharacterPool() const {
     if (options_.useLower) pool += kLower;
     if (options_.useDigits) pool += kDigits;
     if (options_.useSymbols) pool += kSymbols;
+
+    if (options_.excludeAmbiguous) {
+        const std::string ambiguous = "0O1lI";
+        pool.erase(std::remove_if(pool.begin(), pool.end(),
+                                   [&](char c) {
+                                       return ambiguous.find(c) != std::string::npos;
+                                   }),
+                   pool.end());
+    }
     return pool;
 }
 

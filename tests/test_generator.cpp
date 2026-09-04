@@ -43,6 +43,19 @@ TEST(PasswordGenerator, ThrowsWhenNoCharsetSelected) {
     EXPECT_THROW(PasswordGenerator gen(opts), std::invalid_argument);
 }
 
+TEST(PasswordGenerator, ExcludesAmbiguousCharacters) {
+    GeneratorOptions opts;
+    opts.length = 200;  // достатъчно голямо, за да покрие всички символи
+    opts.excludeAmbiguous = true;
+    PasswordGenerator gen(opts);
+
+    std::string password = gen.generate();
+    const std::string ambiguous = "0O1lI";
+    for (char c : password) {
+        EXPECT_EQ(ambiguous.find(c), std::string::npos);
+    }
+}
+
 TEST(PasswordGenerator, GeneratesDifferentPasswords) {
     GeneratorOptions opts;
     opts.length = 20;

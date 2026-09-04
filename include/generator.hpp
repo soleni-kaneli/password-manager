@@ -12,6 +12,7 @@ struct GeneratorOptions {
     bool useLower = true;
     bool useDigits = true;
     bool useSymbols = true;
+    bool excludeAmbiguous = false;  // Изключва символи като 0/O, 1/l/I
 };
 
 class PasswordGenerator {
